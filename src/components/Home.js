@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { useNavigate } from "react-router";
@@ -7,9 +7,22 @@ const Home = () => {
 
   const [modalShow, setModalShow] = useState(false);
 
+  let [count, setCount] = useState(0)
+  let [count1, setCount1] = useState(5)
+
+
+  useEffect( ()=>{
+    console.log( "Side Effects Managed" );
+  }, [count])
+
   return (
     <div>
       <h1> Home Contents </h1>
+      <Button variant="warning" onClick={()=>setCount(count+1)}> + </Button>
+      <h2> {count} {count1} </h2>
+      <Button variant="warning"> - </Button>
+      <Button variant="danger" onClick={()=>setCount1(count1+1)}> + dup </Button>
+      <Button variant="danger" onClick={()=>setCount1(count1+1)}> - dup</Button>
       <Button variant="primary" onClick={() => setModalShow(true)}>
         Launch vertically centered modal
       </Button>
