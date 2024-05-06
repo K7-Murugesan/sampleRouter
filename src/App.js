@@ -16,7 +16,7 @@ function App() {
       <Router>
         <ManageRoute>
           <Route exact path="/" element={<NavBar1 />}>
-            <Route index element={<Header />} />
+            <Route  index element={<Header />} />
             <Route  path="/sign-up" element={ <SignUp/> } />
             <Route path="/products" element={<Products1 />} />
           </Route>
