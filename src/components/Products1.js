@@ -14,7 +14,7 @@ const Products1 = () => {
   useEffect(() => {
     let fetchData = async () => {
       try{
-        let res = await fetch("https://fakestoreapi.com/products", {
+        let res = await fetch("http://localhost:4000/products", {
           method : "GET"
         });
         if(res.ok){
@@ -57,7 +57,7 @@ const Products1 = () => {
           products.map((product) => (
             <Card style={{ width: "18rem", height:"auto" }} className="m-3 d-grid align-item-between" key={product.id}>
               <article>
-                <Card.Img variant="top" src={product.image} />
+                <Card.Img variant="top" src={product.thumbnail} />
                 <Card.Body>
                   <Card.Title>{product.title}</Card.Title>
                   <Card.Text> {product.brand}</Card.Text>
