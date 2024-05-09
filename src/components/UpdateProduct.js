@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
@@ -6,62 +6,41 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import axios from "axios";
+import Swal from "sweetalert2";
 
-// let a = 10;
-// let b = 20;
+const UpdateProduct = () => {
 
-// let obj = {
-//   a,
-//   b
-// }
+    
+    let [ product, setProduct ] = useState( {} )
+    let {id} = useParams()
+    let navigate = useNavigate()
 
-const CreateProduct = () => {
-  // let [ title, setTitle ] = useState( "" )
-  // let [ description, setDescription ] = useState( "" )
-  // let [ brand, setBrand ] = useState( "" )
-  // let [ price, setPrice ] = useState( 0 )
 
-  let [product, setProduct] = useState({
-    title: "",
-    description: "",
-    price : 10,
-    discountPercentage : 25,
-    rating : 6.6,
-    stock : 50,
-    brand : "",
-    category : "",
-    thumbnail : "https://cdn.dummyjson.com/product-images/1/4.jpg",
-    images : ["https://cdn.dummyjson.com/product-images/1/4.jpg"]
-  });
+   useEffect( ()=>{
+        axios.get( "http://localhost:4000/products/"+id )
+        .then( res => setProduct( res.data )  )
+   }, []  )
 
-  let navigate = useNavigate()
+   let handleChange = (e) => {
+      let {name, value} = e.target
+        setProduct( { ...product, [name] : value } )
+   }
 
-  let handleChange = (e) => {
-
-     let {name,value} =  e.target
-
-      setProduct( { ...product, [name] : value }  )
-  }
-
-  let handleSubmit = (e) => {
+   let handleUpdate = (e) => {
       e.preventDefault();
 
-      console.log( product );
-
-      fetch( "http://localhost:4000/products", {
-        method : 'POST',
-        headers : {
-          "Content-type" : "application/json"
-        },
-        body : JSON.stringify( product )
+      axios.put( "http://localhost:4000/products/"+id, product )
+      .then( ()=>{
+        Swal.fire({
+            title: "Good job!",
+            text: "Successfully Updated",
+            icon: "success"
+          });    
+        navigate("/products")
       } )
-      .then( ()=> {
-        console.log(  "Added Successfuly" );
-        navigate( "/products" )
-      } )
-
-  }
+   }
 
   return (
     <div>
@@ -76,9 +55,9 @@ const CreateProduct = () => {
           }}
         >
           <Typography component="h1" variant="h5">
-            Create New Product
+            Update Your Product
           </Typography>
-          <Box component="form" noValidate sx={{ mt: 1 }} onSubmit={ handleSubmit }>
+          <Box component="form" noValidate sx={{ mt: 1 }} onSubmit={ handleUpdate }>
             <TextField
               margin="normal"
               required
@@ -89,7 +68,7 @@ const CreateProduct = () => {
               autoComplete="title"
               autoFocus
               value={ product.title }
-              onChange={handleChange}
+              onChange={ handleChange }
             />
             <TextField
               margin="normal"
@@ -100,7 +79,7 @@ const CreateProduct = () => {
               id="description"
               autoComplete="description"
               value={ product.description }
-              onChange={handleChange}
+              onChange={ handleChange }
             />
             <Grid container spacing={2}>
               <Grid item xs={3}>
@@ -114,7 +93,7 @@ const CreateProduct = () => {
                   id="price"
                   autoComplete="current-price"
                   value={ product.price }
-                  onChange={handleChange}
+                  onChange={ handleChange }
                 />
               </Grid>
               <Grid item xs={3}>
@@ -128,7 +107,7 @@ const CreateProduct = () => {
                   id="discountPercentage"
                   autoComplete="discountPercentage"
                   value={ product.discountPercentage }
-                  onChange={handleChange}
+                  onChange={ handleChange }
                 />
               </Grid>
               <Grid item xs={3}>
@@ -142,7 +121,7 @@ const CreateProduct = () => {
                   id="rating"
                   autoComplete="current-rating"
                   value={ product.rating }
-                  onChange={handleChange}
+                  onChange={ handleChange }
                 />
               </Grid>
               <Grid item xs={3}>
@@ -156,7 +135,7 @@ const CreateProduct = () => {
                   id="stock"
                   autoComplete="current-stock"
                   value={ product.stock }
-                  onChange={handleChange}
+                  onChange={ handleChange }
                 />
               </Grid>
             </Grid>
@@ -169,7 +148,7 @@ const CreateProduct = () => {
               id="brand"
               autoComplete="my-brand"
               value={ product.brand }
-              onChange={handleChange}
+              onChange={ handleChange }
             />
             <TextField
               margin="normal"
@@ -180,7 +159,7 @@ const CreateProduct = () => {
               id="category"
               autoComplete="my-category"
               value={ product.category }
-              onChange={handleChange}
+              onChange={ handleChange }
             />
             <Button
               type="submit"
@@ -188,13 +167,13 @@ const CreateProduct = () => {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Add New Item
+              Save
             </Button>
           </Box>
         </Box>
       </Container>
     </div>
-  );
-};
+  )
+}
 
-export default CreateProduct;
+export default UpdateProduct

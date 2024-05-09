@@ -11,6 +11,7 @@ import {
 } from "react-router-dom";
 import SignUp from "./components/SignUp";
 import CreateProduct from "./components/CreateProduct";
+import UpdateProduct from "./components/UpdateProduct";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
             <Route  path="/sign-up" element={ <SignUp/> } />
             <Route path="/products" element={<Products1 />} />
             <Route path="/new-product" element={<CreateProduct />} />
+            <Route path="/update/:id" element = { <UpdateProduct/> } />
           </Route>
           <Route path="*" element={<NotFound />} />
         </ManageRoute>
